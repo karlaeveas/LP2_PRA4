@@ -1,0 +1,134 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <map>
+using namespace std;
+class Estudiante {
+private:
+    string nombre;
+    string direccion;
+    string numeroMatricula;
+    map<string, float> notas; // Asignatura -> Nota
+    map<string, int> faltasAsistencia; // Asignatura -> Faltas
+public:
+    Estudiante(string nombre, string direccion, string numeroMatricula) { 
+        this->nombre = nombre; 
+        this->direccion = direccion;
+        this->numeroMatricula = numeroMatricula;
+    }
+    string obtenerNombre() const {
+        return nombre;
+    }
+    string obtenerDireccion() const {
+        return direccion;
+    }
+    string obtenerNumeroMatricula() const {
+        return numeroMatricula;
+    }
+    void asignarNota(string asignatura, float nota) {
+        notas[asignatura] = nota;
+    }
+    float obtenerNota(string asignatura) const {
+        if (notas.find(asignatura) != notas.end()) {
+            return notas.at(asignatura);
+        }
+        else {
+            return -1; // Nota no encontrada
+        }
+    }
+    void registrarFaltaAsistencia(string asignatura, int faltas) {
+        faltasAsistencia[asignatura] = faltas;
+    }
+    int obtenerFaltasAsistencia(string asignatura) const {
+        if (faltasAsistencia.find(asignatura) != faltasAsistencia.end()) {
+            return faltasAsistencia.at(asignatura);
+        }
+        else {
+            return -1; // Faltas no encontradas
+        }
+    }
+};
+class Profesor {
+private:
+    string nombre;
+    string direccion;
+    string telefono;
+    vector<string> asignaturasImpartidas;
+public:
+    Profesor(string nombre, string direccion, string telefono) { 
+        this->nombre = nombre;
+        this->direccion = direccion;
+        this->telefono = telefono;
+    }
+    string obtenerNombre() const {
+        return nombre;
+    }
+    string obtenerDireccion() const {
+        return direccion;
+    }
+    string obtenerTelefono() const {
+        return telefono;
+    }
+    void agregarAsignaturaImpartida(string asignatura) {
+        asignaturasImpartidas.push_back(asignatura);
+    }
+    vector<string> obtenerAsignaturasImpartidas() const {
+        return asignaturasImpartidas;
+    }
+};
+class Asignatura {
+private:
+    string codigo;
+    string nombre;
+    string descripcion;
+    Profesor* profesorAsociado;
+public:
+    Asignatura(string codigo, string nombre, string descripcion, Profesor* profesorAsociado) { 
+        this->codigo = codigo; 
+        this->nombre = nombre;
+        this->descripcion = descripcion;
+        this->profesorAsociado = profesorAsociado;
+    }
+    string obtenerCodigo() const {
+        return codigo;
+    }
+    string obtenerNombre() const {
+        return nombre;
+    }
+    string obtenerDescripcion() const {
+        return descripcion;
+    }
+    Profesor* obtenerProfesorAsociado() const {
+        return profesorAsociado;
+    }
+};
+int main() {
+    Estudiante estudiante("catalina Linares", "Calle 405", "20001");
+    Profesor profesor("Mag. Guillermo Salas", "Avenida Dolores", "951-753-456");
+    Asignatura asignatura("SIS011", "Introduccion a la Contabilidad", "Curso introductorio a la contabilidad", &profesor);
+
+    estudiante.asignarNota("SIS011", 15); //notas y faltas de asistencia
+    estudiante.registrarFaltaAsistencia("SIS011", 2);
+
+    cout << "Informacion del estudiante:" << endl;
+    cout << "Nombre: " << estudiante.obtenerNombre() << endl;
+    cout << "Direccion: " << estudiante.obtenerDireccion() << endl;
+    cout << "Numero de matricula: " << estudiante.obtenerNumeroMatricula() << endl;
+    cout << endl;
+
+    cout << "Informacion de la asignatura:" << endl;
+    cout << "Codigo: " << asignatura.obtenerCodigo() << endl;
+    cout << "Nombre: " << asignatura.obtenerNombre() << endl;
+    cout << "Descripcion: " << asignatura.obtenerDescripcion() << endl;
+    cout << "Profesor: " << asignatura.obtenerProfesorAsociado()->obtenerNombre() << endl;
+    cout << endl;
+
+    cout << "Notas del estudiante en " << asignatura.obtenerNombre() << ":" << endl;
+    cout << "Nota: " << estudiante.obtenerNota("SIS011") << endl;
+    cout << endl;
+
+    cout << "Faltas de asistencia del estudiante en " << asignatura.obtenerNombre() << ":" << endl;
+    cout << "Faltas: " << estudiante.obtenerFaltasAsistencia("SIS011") << endl;
+
+    return 0;
+}
