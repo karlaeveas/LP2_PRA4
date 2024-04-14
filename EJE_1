@@ -1,0 +1,107 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+class Autor {
+private:
+    string nombre;
+    string nacionalidad;
+    vector<string> librosEscritos;
+public:
+    Autor(string nombre, string nacionalidad) {
+        this->nombre = nombre;
+        this->nacionalidad = nacionalidad;
+    }
+    void agregarLibroEscrito(string titulo) {
+        librosEscritos.push_back(titulo);
+    }
+    string obtenerNombre() const {
+        return nombre;
+    }
+    string obtenerNacionalidad() const {
+        return nacionalidad;
+    }
+};
+class Libro {
+private:
+    string isbn;
+    string titulo;
+    int year;
+    int cantidad;
+    Autor* autorAsociado;
+public:
+    Libro(string isbn, string titulo, int year, int cantidad, Autor* autorAsociado) {
+        this->isbn = isbn;
+        this->titulo = titulo;
+        this->year = year;
+        this->cantidad = cantidad;
+        this->autorAsociado = autorAsociado;
+    }
+    string obtenerISBN() const {
+        return isbn;
+    }
+    string obtenerTitulo() const {
+        return titulo;
+    }
+    int obtenerYear() const {
+        return year;
+    }
+    int obtenerCantidad() const {
+        return cantidad;
+    }
+    Autor* obtenerAutorAsociado() const {
+        return autorAsociado;
+    }
+};
+class Usuario {
+private:
+    string nombre;
+    string direccion;
+    string telefono;
+    vector<Libro*> librosPrestados;
+    vector<string> fechasPrestamo;
+    vector<string> fechasDevolucion;
+public:
+    Usuario(string nombre, string direccion, string telefono) { 
+        this->nombre = nombre;
+        this->direccion = direccion;
+        this->telefono = telefono;
+    }
+    void prestarLibro(Libro* libro, string fechaPrestamo, string fechaDevolucion) {
+        librosPrestados.push_back(libro);
+        fechasPrestamo.push_back(fechaPrestamo);
+        fechasDevolucion.push_back(fechaDevolucion);
+    }
+    string obtenerNombre() const {
+        return nombre;
+    }
+    string obtenerDireccion() const {
+        return direccion;
+    }
+    string obtenerTelefono() const {
+        return telefono;
+    }
+    vector<Libro*> obtenerLibrosPrestados() const {
+        return librosPrestados;
+    }
+    vector<string> obtenerFechasPrestamo() const {
+        return fechasPrestamo;
+    }
+    vector<string> obtenerFechasDevolucion() const {
+        return fechasDevolucion;
+    }
+};
+int main() {
+    Autor autor("J.K. Rowling", "Reino Unido");
+    Libro libro("9788497931154", "Harry Potter y la piedra filosofal", 1997, 5, &autor);
+    Usuario usuario("Maria Gomez", "Avenida 301", "987-654-321");
+    string fechaPrestamo = "2024-04-13";
+    string fechaDevolucion = "2024-04-20";
+    usuario.prestarLibro(&libro, fechaPrestamo, fechaDevolucion); // Se presta por una semana
+    cout << "Libro prestado por: " << usuario.obtenerNombre() << endl;
+    cout << "Título del libro: " << libro.obtenerTitulo() << endl;
+    cout << "Autor del libro: " << libro.obtenerAutorAsociado()->obtenerNombre() << endl;
+    cout << "Fecha de préstamo: " << fechaPrestamo << endl;
+    cout << "Fecha de devolución: " << fechaDevolucion << endl;
+    return 0;
+}
