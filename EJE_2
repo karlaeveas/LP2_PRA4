@@ -1,0 +1,117 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+class Cliente {
+private:
+    string nombre;
+    string direccion;
+    string telefono;
+    vector<string> comprasRealizadas;
+    vector<double> pagosRealizados;
+public:
+    Cliente(string nombre, string direccion, string telefono) { 
+        this->nombre = nombre; 
+        this->direccion = direccion;
+        this->telefono = telefono;
+    }
+    void agregarCompra(string descripcion) {
+        comprasRealizadas.push_back(descripcion);
+    }
+    void registrarPago(double monto) {
+        pagosRealizados.push_back(monto);
+    }
+    string obtenerNombre() const {
+        return nombre;
+    }
+    string obtenerDireccion() const {
+        return direccion;
+    }
+    string obtenerTelefono() const {
+        return telefono;
+    }
+    vector<string> obtenerComprasRealizadas() const {
+        return comprasRealizadas;
+    }
+    vector<double> obtenerPagosRealizados() const {
+        return pagosRealizados; }
+};
+class Producto {
+private:
+    string codigo;
+    string descripcion;
+    double precio;
+    string proveedorAsociado;
+public:
+    Producto(string codigo, string descripcion, double precio, string proveedorAsociado) { 
+        this->codigo = codigo; 
+        this->descripcion = descripcion;
+        this->precio = precio;
+        this->proveedorAsociado = proveedorAsociado;
+    }
+    string obtenerCodigo() const {
+        return codigo;
+    }
+    string obtenerDescripcion() const {
+        return descripcion;
+    }
+    double obtenerPrecio() const {
+        return precio;
+    }
+    string obtenerProveedorAsociado() const {
+        return proveedorAsociado;
+    }
+};
+class Venta {
+private:
+    int numeroFactura;
+    string fecha;
+    Cliente* clienteAsociado;
+    vector<Producto*> productosVendidos;
+public:
+    Venta(int numeroFactura, Cliente* clienteAsociado, string fecha) {
+        this->numeroFactura = numeroFactura;
+        this->clienteAsociado = clienteAsociado;
+        this->fecha = fecha;
+    }
+    void agregarProducto(Producto* producto) {
+        productosVendidos.push_back(producto);
+    }
+    int obtenerNumeroFactura() const {
+        return numeroFactura;
+    }
+    string obtenerFecha() const {
+        return fecha;
+    }
+    Cliente* obtenerClienteAsociado() const {
+        return clienteAsociado;
+    }
+    vector<Producto*> obtenerProductosVendidos() const {
+        return productosVendidos;
+    }
+};
+int main() {
+    Cliente cliente("Mario Gonzales", "Avenida 105", "963-852-741");
+    Producto producto1("001", "Camisa", 25.99, "Proveedor 1");
+    Producto producto2("002", "Pantalon", 39.99, "Proveedor 2");
+    string fechaVenta = "2024-04-15";
+    Venta venta(1, &cliente, fechaVenta);
+    venta.agregarProducto(&producto1);
+    venta.agregarProducto(&producto2);
+    cliente.agregarCompra("Camisa, Pantalon");
+    cout << "Cliente: " << cliente.obtenerNombre() << endl;
+    cout << "Direccion: " << cliente.obtenerDireccion() << endl;
+    cout << "Telefono: " << cliente.obtenerTelefono() << endl;
+    cout << "Compra realizada: ";
+    for (const auto& compra : cliente.obtenerComprasRealizadas()) {
+        cout << compra << ", ";
+    }
+    cout << endl;
+    cout << "Numero de factura: " << venta.obtenerNumeroFactura() << endl;
+    cout << "Fecha de venta: " << venta.obtenerFecha() << endl;
+    cout << "Productos vendidos: " << endl;
+    for (const auto& producto : venta.obtenerProductosVendidos()) {
+        cout <<"Codigo: "<<producto->obtenerCodigo() <<", Descripcion: "<<producto->obtenerDescripcion() <<", Precio: $"<< producto->obtenerPrecio()<<", Proveedor: "<<producto->obtenerProveedorAsociado()<<endl;
+    }
+    return 0;
+}
